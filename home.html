@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <title>Twitter Word Cloud</title>
+    <meta charset="utf-8">
+    <link href="home/home.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Bevan|Raleway:400,700|Lora|Kaushan+Script|Satisfy|Permanent+Marker' rel='stylesheet' type='text/css'>
+    <script src="jquery-2.1.0.js"></script>
+    <script>
+        function displayClouds(){
+            $.getJSON("clouds.php", function(data){
+                html="";
+                if(data['status']!='ok'){
+                    $('#status').html(data['status']);
+                }else{
+                    if (data['clouds']){
+                        $("#timeline").html("");
+                        for (var i = 0; i < data['clouds'].length; i++){
+			    var primKey =  data['clouds'][i]['log'];
+			    var time = data['clouds'][i]['time'];
+                            var username = data['clouds'][i]['username'];
+                            var likes = data['clouds'][i]['likes'];
+                            html = '<div>' +
+                                    data['clouds'][i]['html'] +
+                                    '<div id="clouddetails">' +
+                                    '<input class="timeline-like" id="'+i+'" type="button" onClick="increaseLike('+primKey+')" value="&#10084"/>' +
+                                    '<p class="cloudinfo" class="timeline-like" id="like' + i + '">'+likes+'</p>' +
+                                    '<p class="cloudinfo" id="username' + i + '">By:'+username+'</p>' +
+                                    '<p class="cloudinfo" id="time' + i + '">On:'+time.slice(-16)+'</p>' +
+				    '<img class="cloudinfo" style="height:40px; width:40px" class="image-user" id="image'+i+'" src="/~singhdi1/upload_files/' + username + '.jpg">';
+                                    '</div>' +
+                                    '</div>' +
+                                    html;
+		                var div = $(html);
+		                $("#timeline").append(div);
+                    	}
+                    }
+                }
+            });
+        }
+        function createCloud(param) {
+            // Ajax request goes here...
+            $.getJSON("home/twitterapi.php", {query: param}, function (data) {
+                var html = "";
+                for (var i = 0; i < data['array'].length; i++) {
+                    var colors = ['blue', 'red', 'yellow', 'yellowgreen','green',
+                        'orange', 'purple', 'violet', 'lightskyblue', 'magenta'];
+    		    var color1 = colors[Math.floor(Math.random() * colors.length)];
+                    var fontSize = Math.floor((Math.random() *20)+10);
+                    var angle = Math.floor((Math.random() *45)-20);
+                    html += '<p id='+i+' class="word" style="color:'+color1+'; ' +
+                        'font-size:'+fontSize+'px; -ms-transform: rotate('+angle+'deg); ' +
+                        '-webkit-transform: rotate('+angle+'deg); transform: rotate('+angle+'deg);">' +
+                        ''+data['array'][i]+'</p>';
+                }
+                $("#cloud").html(html);
+                $("#pop").show();
+                $("#like").show();
+                if($('#like').is(':visible')) {
+                    $('#like').on('click', function () {
+                        addCloud($('#pop').html());
+			displayClouds();
+                    });
+                }
+            });
+        }
+      function increaseLike(num){
+            console.log(num);
+	    $.getJSON( "like.php", {log: num}, function( data ) {
+                $( ".result" ).html(data);
+                console.log("Add cloud status: "+data['status']);
+                if(data['status']!='ok'){
+                    $('#status').html(data['status']);
+                }else{
+                    $('#status').html("Your cloud was added to the timeline");
+                }
+            });
+        }
+
+      function addCloud(param){
+            console.log(param);
+            $.post( "newcloud.php", {cloudHtml: param}, function( data ) {
+                $( ".result" ).html( data );
+                console.log("Add cloud status: "+data['status']);
+                if(data['status']!='ok'){
+                    $('#status').html(data['status']);
+                }else{
+                    $('#status').html("Your cloud was added to the timeline");
+                }
+            });
+        }
+
+        function checkLogin(){
+            $.getJSON("login/loggedIn.php", function(data){
+                if (data['status']!='ok'){
+                    window.location.replace("login.html");
+                }else{
+                    $("#status").html('<p>Welcome, '+data['username']+'! </p>');
+                }
+            });
+        }
+
+            // This is executed when the document is ready (the DOM for this document is loaded)
+	setInterval(function(){
+   		displayClouds();
+	}, 1000);
+        $(document).ready(function () {
+            checkLogin();//Always check that the user is logged in!
+            $("#pop").hide();
+            $("#like").hide();
+            $('#queryButton').on('click', function () {
+                createCloud($('#queryText').val());
+            });
+        });
+
+    </script>
+</head>
+<!-- DO NOT ALTER ANY OF THE HTML BELOW -->
+<body>
+<div class="outer">
+    <div id="header">
+        <div class="header-item" id="status"></div>
+        <div class="header-item" id="space"></div>
+        <div class="header-item" id="logout"><a href="login/logout.php">Logout</a></div>
+    </div>
+    <div id="main"><h1>Twitter cloud!</h1><h2>One word can mean a lot!</h2></div>
+    <div class="middle">
+        <div id="new-query" class="area">
+            <h3>Create your own twitter word cloud!</h3>
+            <div id="pop">
+                <div id="cloud"></div>
+            </div>
+            <form id="query">
+                <input type="text" id="queryText" title="text"/>
+                <input id="queryButton" type="button" value="Get a word cloud"/>
+		<input id="like" type="button" value="Share"/>
+            </form>
+        </div>
+        <div id="timeline" class="area"></div>
+    </div>
+</div>
+</body>
+</html>

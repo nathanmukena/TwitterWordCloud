@@ -1,0 +1,13 @@
+div{
+    align-self: center;
+}
+.form-item{
+    display: block;
+    margin: 1em;
+    align: center;
+    border: solid rgba(255, 255, 255, 0.98);
+}
+form{
+    display: inline;
+    margin: 1em;
+}

@@ -1,0 +1,193 @@
+body{
+    background-color: rgba(190, 220, 255, 0.98);
+}
+
+
+/*Index CSS Style */
+#Menu-index{
+	display:compact;
+	margin: auto;
+	text-align:center;
+	
+}
+
+
+.buttons{
+	height:70px;
+	width:150px;	
+	font-size:auto;	
+}
+
+#logo-index img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+	width: 300px;
+	height:300px;
+  
+	border: solid slategray 3px;
+}
+
+.prepics{
+    display: table;
+    
+}
+
+h1{
+    text-align: center;
+}
+
+/* End of Index */
+
+
+#outer{
+   display: table;
+    position: relative;
+    min-height: 250px;
+    width: 200px;
+    margin: auto;
+    border: solid slategray 1px;
+    background-color: rgba(145, 180, 255, 0.98);
+    margin-top: 100px;
+    border-radius: 15px;
+}
+
+h2{
+    text-align: center;
+}
+#status{
+    color: red;
+    text-align: center;
+}
+
+#inner{
+    display: block;
+    position: relative;
+    min-height: 200px;
+    width: 200px;
+    margin: auto;
+    border: solid slategray 1px;
+    background-color: rgba(181, 255, 255, 0.98);
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.entry{
+    display: block;
+    position: relative;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#signup{
+    position: relative;
+    margin: auto;
+    display: block;
+    height: 30px;
+    width: 70px;
+    font-size: 15px;
+}
+#login{
+    position: relative;
+    margin: auto;
+    display: block;
+    height: 25px;
+    width: 60px;
+    font-size: 15px;
+}
+@media screen and (max-width: 1000px){
+
+#Menu-index{
+	display:compact;
+	margin: auto;
+	text-align:center;
+	
+}
+
+
+.buttons{
+	height:100px;
+	width:250px;	
+	font-size:40px;	
+}
+
+#logo-index img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+	width: 600px;
+	height:600px;
+  
+	border: solid slategray 3px;
+}
+
+
+
+h1{
+    text-align: center;
+}
+
+/* End of Index */
+
+
+#outer{
+   display: table;
+    position: relative;
+    min-height: 500px;
+    width: 400px;
+    margin: auto;
+    border: solid slategray 1px;
+    background-color: rgba(145, 180, 255, 0.98);
+    margin-top: 100px;
+    border-radius: 15px;
+}
+
+h2{
+    text-align: center;
+    font-size: 40px;
+}
+#status{
+    color: red;
+    text-align: center;
+    font-size: 30px;
+}
+
+#inner{
+    display: block;
+    position: relative;
+    min-height: 425px;
+    width: 400px;
+    margin: auto;
+    border: solid slategray 1px;
+    background-color: rgba(181, 255, 255, 0.98);
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.entry{
+    display: block;
+    position: relative;
+    margin: auto;
+    height: 40px;
+    width: 275px;
+    font-size: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#signup{
+    position: relative;
+    margin: auto;
+    display: block;
+    height: 70px;
+    width: 200px;
+    font-size: 40px;
+}
+#login{
+    position: relative;
+    margin: auto;
+    display: block;
+    height: 40px;
+    width: 140px;
+    font-size: 25px;
+}
+}

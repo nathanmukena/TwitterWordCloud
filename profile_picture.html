@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+<script src="jquery-2.1.0.js"></script>
+<script>
+
+$(document).ready(function () {
+  $.ajax({
+                        type: "GET",
+                        url: "signup/profilepictures.php?image=true",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                      		var html ="";
+				var pics = $.parseJSON(data);
+				for (var i=0; i<pics.length; i++) {
+					html += "<img src='"+pics[i]+"' onclick=submit_picture()/>";
+
+				}
+				$("#predefined_images").html(html);
+			}
+                });
+
+});
+
+</script>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Profile Picture </title>
+</head>
+
+
+<div id="predefined_image_selector"> 
+Please upload an image or pick picture. Registration will not be complete
+until this step is completed.
+
+<div id="predefined_images"></div>
+</div>
+
+
+<body>
+</body>
+</html>
+

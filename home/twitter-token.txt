@@ -1,0 +1,10 @@
+Access token: https://api.twitter.com/oauth/access_token
+Request token: https://api.twitter.com/oauth/request_token
+Consumer Key (API Key): fcHH7pLzvntmaTlbRWmPXH2fi
+Consumer Secret (API Secret): 1O0GfERCGuiGEiEosPBWDWdOiNr1bzPidwHGOwZGdx16qsgryF
+
+Access Token: 4910159825-tEjC42BgsU1W7iZ20pETnKRIhipFZzfYMqwzp4L
+Access Token Secret: P4hct9FdkNq7iBMb2MQa4MNzyjE95N0IJyRjJGMw5yiDj
+Access Level: Read and write
+Owner: NathanMukena
+Owner: ID 4910159825

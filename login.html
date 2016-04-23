@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <title>Login</title>
+    <meta charset="utf-8">
+    <link href="login.css" rel="stylesheet" type="text/css">
+    <script src="jquery-2.1.0.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        function attemptLogin($username, $password){
+            $.getJSON("login/login.php", {username: $username, password: $password}, function (data) {
+                if(data['status']!='ok'){
+                    $('#status').html(data['status']);
+		    $("#outer").effect( "shake" );
+                }else{
+                    console.log("OK!");
+                    window.location.replace("home.html");
+                }
+            });
+        }
+        $(document).ready(function () {
+            $('#submit').on('click', function () {
+                attemptLogin($('#username').val(), $('#password').val());
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="outer">
+            <h2>Login</h2>
+            <div id="inner">		
+		    <form>
+			<input class="entry" type="text" id="username" name="username" size="20" maxlength="40" placeholder="User Name" />
+			<input class="entry" type="password" id="password" name="password" size="20" maxlength="20" placeholder="Password"/>
+			<input class="entry" type="button" id="submit" name="submit" value="Login" />
+		    </form>
+		    <div><p id="status"></p></div>
+            </div>
+    </div>
+</body>
+</html>
+
+

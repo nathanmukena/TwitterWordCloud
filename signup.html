@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <title>Sign Up</title>
+    <link href="login.css" rel="stylesheet" type="text/css">
+    <script src="jquery-2.1.0.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+
+	//dollar signs are not needed, pretty sure. Run tests later ***
+        window.globalVar = "test_3";
+
+	function signup($f, $l, $e, $u, $p, $pc){
+            console.log("getJson is sent!");
+            $.getJSON("signup/signup.php", {first_name:$f, last_name:$l, email:$e,
+                username:$u, password1:$p, password2:$pc}, function(data){
+                if(data['status']!='ok'){
+                    $("#status").html(data['status']);
+                    console.log("Not OK!");
+		    $("#outer").effect( "shake" );
+                }else{
+		    
+    		    setTimeout(function(){
+		    $("#status").html("<h3>Thank you</h3>");},2000); 
+	            $("#outer").hide();
+	            $("#predefined_image_selector").show();
+		    $("<input>").attr({
+			type: 'hidden',
+			id: 'userid',
+			name: 'userid',
+			value: $u
+		    }).appendTo("#imageForm");
+		    profile_pictures($u);
+		}
+           });
+        }
+
+
+	function profile_pictures(user)
+	{
+  		$.ajax({
+                        type: "GET",
+                        url: "signup/profilepictures.php?image=true",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                                var html ="";
+                                var pics = $.parseJSON(data);
+                                for (var i=0; i<pics.length; i++) {
+                                        html += '<img class="prepics" src="'+pics[i]+'" onClick="submit_picture(\''+pics[i]+'\', \''+user+'\')"  />';
+
+                                }
+                                $("#predefined_images").html(html);
+				window.globalVar = "test_3";
+                        }
+                });
+	}
+
+
+	function submit_picture(url, user)
+	{
+		var imageData = {};
+		imageData.user = user;
+		imageData.url = url;
+		//image url
+		//wait until the person yes/no
+		// if yes => that's the picture [php]
+		var v = confirm("Are you sure you want to upload?");
+		if (v) {
+//			var formData = new FormData(this);
+//			formData.append("username", user);
+//               		var $form = $(this); 
+//				$form.append("username", user);
+		$.ajax({
+                        type: "POST",
+                        url: "signup/upload.php",
+                        data: { url: url, user: user},
+                        success: function (data) {
+                                console.log("SUCCESS SUBMITTING PREDEFINED PIC.");
+				window.location.replace("login.html");
+                        }
+                });
+
+		}
+		//if no
+		else {
+
+		}
+	} 
+
+	function uploadImage(_this){ 
+		$.ajax({ 
+		type: "POST", 
+		url: "signup/upload.php", 
+		data: new FormData(_this), 
+		cache: false, 
+		contentType: false, 
+		processData: false, 
+		success: function (data) { 
+			console.log("Success");		//your code 
+			} 
+		}); 
+	}		
+
+       $(document).ready(function () {
+		$("#predefined_image_selector").hide();
+		$("#password-description").hide();
+		$("#username-description").hide();
+		$( "#username" ).keypress(function() {
+		  $("#username-description").show();
+		});
+		$( "#password" ).keypress(function() {
+		  $("#password-description").show();
+		});
+         	//
+		window.profile_pictures(); // $('#signup').on('click', function(){
+
+/*
+$('body').on('submit', 'form', function(e){ 
+	e.preventDefault(); 
+
+	uploadImage($(this)); 
+
+	return false; 
+}) 
+*/
+
+		//Image
+		$.ajax({
+                        type: "GET",
+                        url: "signup/upload.php",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                        // code here
+			}
+		})
+
+		// Image upload selected by the user
+	        $('body').on('submit', 'form', function(e){
+                e.preventDefault();
+                if ($("#fileToUpload").val()) {
+		
+                $.ajax({
+                        type: "POST",
+                        url: "signup/upload.php",
+                        data: new FormData(this),
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                                console.log("SUCCESS MAN!");
+                                window.location.replace("login.html");
+                        }
+                });
+		}
+
+                return false;
+                }) ;
+            $('#signup').on('click', function(){
+                signup($("#fname").val(),$("#lname").val(),$("#email").val(),$("#username").val(),
+                        $("#password").val(), $("#passwordconfirm").val());
+            });
+            $('#login').on('click', function(){
+                window.location.replace("login.html");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id = "outer" id="registration_form">
+	    <h2>Sign Up</h2>
+	    <div id="status"></div>
+	    <form>
+		<div class="form-item">
+		    <input class="entry" type="text" id="fname" placeholder="First Name"/>
+		</div>
+		<div class="form-item">
+		    <input class="entry" type="text" id="lname" placeholder="Last Name"/>
+		</div>
+		<div class="form-item">
+		    <input class="entry" type="text" id="email" placeholder="yourname@email.com"/>
+		</div>
+		<div class="form-item">
+		    <input class="entry" type="text" id="username" placeholder="username"/>
+	       	    <p id="username-description"> <small>Use only letters, numbers, and the underscore. Must be between 4 and 20 characters long.</small></p>
+		</div>
+		<div class="form-item">
+		    <input class="entry" type="password" id="password" placeholder="Password"/>
+		    <p id="password-description"> <small>Use only letters and numbers. Must be between 4 and 20 characters long.</small></p>
+		</div>
+		<div class="form-item">
+		    <input class="entry" type="password" id="passwordconfirm" placeholder="Confirm Password"/>
+		</div>
+	
+	<!-- For Login -->
+		<div class="form-item" class="entry">
+		    <form action="index.html">
+		        <input type="button" class="validate" id="signup" value="Sign Up">
+			<input type="hidden" name="MAX_FILE_SIZE" value="50000" />		
+		    </form>
+		</div>
+    </div> <!-- outer-->
+
+
+
+<div id="predefined_image_selector">
+
+<p>
+Please upload an image or pick picture. Registration will not be complete
+until this step is completed.
+</p>
+<div id="predefined_images" style="height=100px; width=300px;"></div>
+<p> Predefined Images: File must be less than 50kb and a jpg.</p>
+
+<form id="imageForm" enctype="multipart/form-data">
+<input type="file" name="upload" id="fileToUpload">
+<input type="submit" value="Submit" id = "uploadImageButton" name="submit">
+</form>
+
+</div> <!-- predefined image selector -->
+
+
+
+
+</body>
+</html>
